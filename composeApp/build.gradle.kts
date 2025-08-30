@@ -35,8 +35,7 @@ kotlin {
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
 
-            implementation("dev.whyoleg.cryptography:cryptography-core:0.5.0")
-            implementation("dev.whyoleg.cryptography:cryptography-provider-optimal:0.5.0")
+
 
             implementation(compose.runtime)
             implementation(compose.foundation)

@@ -8,6 +8,9 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 kotlin {
@@ -26,6 +29,15 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
+
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-beta05")
+
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
+
+            implementation("dev.whyoleg.cryptography:cryptography-core:0.5.0")
+            implementation("dev.whyoleg.cryptography:cryptography-provider-optimal:0.5.0")
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -74,7 +86,13 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    add("kspAndroid", libs.androidx.room.compiler)
+
 }
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 
 compose.desktop {
     application {

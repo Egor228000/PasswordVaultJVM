@@ -1,5 +1,7 @@
 package org.example.project.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -28,7 +30,20 @@ fun NavHosting(navControll: NavHostController, paddingValues: PaddingValues) {
     NavHost(
         navController = navControll,
         startDestination = Screens.Main.route,
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier.padding(paddingValues),
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(300)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(300)
+            )
+        },
+
     ) {
         composable(Screens.SplashPassword.route) {
             SplashPasswordScreen()
@@ -49,4 +64,5 @@ fun NavHosting(navControll: NavHostController, paddingValues: PaddingValues) {
             SettingScreen()
         }
     }
+
 }

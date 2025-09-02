@@ -60,7 +60,8 @@ fun MainScreen() {
                     colors = TextFieldDefaults.colors(
                         focusedTextColor = Color(0xFFB8B8B8),
                         unfocusedContainerColor = Color(0xFF1E1E1E),
-                        focusedContainerColor = Color(0xFF1E1E1E)
+                        focusedContainerColor = Color(0xFF1E1E1E),
+                        focusedIndicatorColor = Color(0xFFBA85FA)
                     ),
                     textStyle = TextStyle(
                         fontSize = 17.sp
@@ -158,6 +159,7 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
                 modifier = Modifier
                     .padding(start = 16.dp)
             ) {
+                val description = "wsdfsdfsddssaasassssdf"
                 Text(
                     "Google",
                     color = Color.White,
@@ -165,7 +167,8 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    "Goosdasdasdasdfsdfgle",
+                    text = if (description.length <= 21) description else description.take(18).plus("...")
+                    ,
                     color = Color(0xFFB8B8B8),
                     fontSize = 14.sp,
                 )

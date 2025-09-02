@@ -1,7 +1,9 @@
 package org.example.project.navigation
 
-import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,10 +24,11 @@ enum class Screens(val route: String) {
 }
 
 @Composable
-fun NavHosting(navControll: NavHostController) {
+fun NavHosting(navControll: NavHostController, paddingValues: PaddingValues) {
     NavHost(
         navController = navControll,
-        startDestination = Screens.Main.route
+        startDestination = Screens.Main.route,
+        modifier = Modifier.padding(paddingValues)
     ) {
         composable(Screens.SplashPassword.route) {
             SplashPasswordScreen()

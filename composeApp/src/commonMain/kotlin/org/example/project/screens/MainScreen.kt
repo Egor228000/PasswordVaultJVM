@@ -1,19 +1,7 @@
 package org.example.project.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.hoverable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.waterfallPadding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,24 +12,18 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.onPointerEvent
-import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import jdk.jfr.Description
+import org.example.project.utils.handCursor
 import org.jetbrains.compose.resources.painterResource
 import passwordvaultjvm.composeapp.generated.resources.Res
 import passwordvaultjvm.composeapp.generated.resources.add
 import passwordvaultjvm.composeapp.generated.resources.copy
 import passwordvaultjvm.composeapp.generated.resources.search
-import java.awt.Cursor
-import javax.management.Descriptor
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -130,6 +112,8 @@ fun MainScreen() {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CardPassword(isHovered: MutableState<Boolean>) {
+
+
     Card(
 
         shape = RoundedCornerShape(15),
@@ -139,8 +123,19 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .onPointerEvent(PointerEventType.Enter) { isHovered.value = true }
-            .onPointerEvent(PointerEventType.Exit) { isHovered.value = false },
+            .pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        if (event.type == PointerEventType.Enter) {
+                            isHovered.value = true
+                        } else if (event.type == PointerEventType.Exit) {
+                            isHovered.value = false
+                        }
+                    }
+                }
+            }
+
     ) {
         Row(
             modifier = Modifier
@@ -186,7 +181,7 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
                 IconButton(
                     onClick = {},
                     modifier = Modifier
-                        .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))
+                        .handCursor()
                 ) {
                     Icon(
                         painter = painterResource(Res.drawable.copy),
@@ -201,6 +196,8 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
     }
 }
 
+
+
 data class CardPasswordData(
     val id: Int,
     val name: String,
@@ -208,3 +205,5 @@ data class CardPasswordData(
     val copy: String,
     val icon: Int
 )
+
+// commonMain

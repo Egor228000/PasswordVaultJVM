@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
-import org.example.project.navigation.NavHosting
+import org.example.project.navigation.NavigationBottom
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,8 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navControll = rememberNavController()
-
-            NavHosting(navControll)
+            NavigationBottom(navControll)
         }
     }
 }

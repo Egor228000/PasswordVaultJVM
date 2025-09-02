@@ -8,7 +8,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation.compose.rememberNavController
-import org.example.project.navigation.NavHosting
+import org.example.project.navigation.NavigationBottom
 import java.awt.Dimension
 
 fun main() = application {
@@ -23,7 +23,6 @@ fun main() = application {
     ) {
         window.minimumSize = Dimension(400, 900)
         val navControll = rememberNavController()
-
-        NavHosting(navControll)
+        NavigationBottom(navControll)
     }
 }

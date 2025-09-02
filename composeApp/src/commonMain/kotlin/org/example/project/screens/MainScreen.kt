@@ -112,8 +112,6 @@ fun MainScreen() {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CardPassword(isHovered: MutableState<Boolean>) {
-
-
     Card(
 
         shape = RoundedCornerShape(15),

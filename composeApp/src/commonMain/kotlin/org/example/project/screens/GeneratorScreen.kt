@@ -4,17 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import org.example.project.utils.handCursor
+import org.example.project.viewModel.ViewModelPassword
 import org.jetbrains.compose.resources.painterResource
 import passwordvaultjvm.composeapp.generated.resources.Res
 import passwordvaultjvm.composeapp.generated.resources.copy
@@ -22,19 +23,29 @@ import passwordvaultjvm.composeapp.generated.resources.restart
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GeneratorScreen() {
+fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
     val stateSlider = remember {
         SliderState(
-            0f,
+            4f,
             valueRange = 4f..20f,
         )
     }
     var includeDigits = remember { mutableStateOf(false) }
     var includeSymbols = remember { mutableStateOf(false) }
     var includeUppercase = remember { mutableStateOf(false) }
-
     var slideNumber = stateSlider.value.toInt()
+    var password by remember { mutableStateOf("") }
+    val clipboardManager = LocalClipboardManager.current
+    val scope  = rememberCoroutineScope()
 
+    LaunchedEffect(slideNumber, includeUppercase.value, includeDigits.value, includeSymbols.value) {
+        password = viewModelPassword.generatePassword(
+            length = slideNumber,
+            includeDigits = includeDigits.value,
+            includeSymbols = includeSymbols.value,
+            includeUppercase = includeUppercase.value
+        )
+    }
     Column {
         CenterAlignedTopAppBar(
             title = {
@@ -66,7 +77,7 @@ fun GeneratorScreen() {
 
                 ) {
                     Text(
-                        "12345678911234912222",
+                        password,
                         fontSize = 18.sp,
                         color = Color.White,
                         modifier = Modifier
@@ -77,7 +88,14 @@ fun GeneratorScreen() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         IconButton(
-                            onClick = {},
+                            onClick = {
+                                password = viewModelPassword.generatePassword(
+                                    length = slideNumber,
+                                    includeDigits = includeDigits.value,
+                                    includeSymbols = includeSymbols.value,
+                                    includeUppercase = includeUppercase.value
+                                )
+                            },
                             modifier = Modifier
                                 .handCursor()
                         ) {
@@ -88,7 +106,11 @@ fun GeneratorScreen() {
                             )
                         }
                         IconButton(
-                            onClick = {},
+                            onClick = {
+                                scope.launch {
+                                    clipboardManager.setText(annotatedString = AnnotatedString(password))
+                                }
+                            },
                             modifier = Modifier
                                 .handCursor()
                         ) {
@@ -167,15 +189,15 @@ fun GeneratorScreen() {
 
                     FiltersGeneratorPassword(
                         "Заглавные буквы (A-Z)",
-                        includeDigits
+                        includeUppercase
                     )
                     FiltersGeneratorPassword(
                         "Цифры (0-9)",
-                        includeSymbols
+                        includeDigits
                     )
                     FiltersGeneratorPassword(
                         "Спецсимволы (!_@#&)",
-                        includeUppercase,
+                        includeSymbols,
                         false
                     )
 
@@ -232,3 +254,5 @@ fun FiltersGeneratorPassword(
     }
 
 }
+
+

@@ -99,7 +99,10 @@ fun MainScreen() {
                 ) {
                     FloatingActionButton(
                         onClick = {},
-                        containerColor = Color(0xFFBA85FA)
+                        containerColor = Color(0xFFBA85FA),
+                        modifier = Modifier
+                            .handCursor()
+
                     ) {
                         Icon(painter = painterResource(Res.drawable.add), null)
                     }

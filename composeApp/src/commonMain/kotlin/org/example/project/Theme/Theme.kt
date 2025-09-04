@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
     onSurface = Color(0xFF1C1B1F),
     error = Color(0xFFB3261E),
     onError = Color.White
-    // добавь остальные цвета при необходимости
 )
 
  val DarkColors = darkColorScheme(
@@ -51,7 +50,6 @@ import androidx.compose.ui.graphics.Color
     onSurface = Color(0xFFE6E1E5),
     error = Color(0xFFF2B8B5),
     onError = Color(0xFF601410)
-    // добавь остальные цвета при необходимости
 )
 
 

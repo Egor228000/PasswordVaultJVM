@@ -1,5 +1,6 @@
 package org.example.project
 
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -13,6 +14,7 @@ import com.mayakapps.compose.windowstyler.WindowCornerPreference
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.mayakapps.compose.windowstyler.WindowStyle
 import org.example.project.navigation.NavigationBottom
+import org.example.project.viewModel.ViewModelPassword
 import java.awt.Dimension
 
 fun main() = application {
@@ -33,6 +35,7 @@ fun main() = application {
         window.minimumSize = Dimension(400, 900)
         val navControll = rememberNavController()
 
-        NavigationBottom(navControll)
+        val viewModelPassword = remember { ViewModelPassword() }
+        NavigationBottom(navControll, viewModelPassword)
     }
 }

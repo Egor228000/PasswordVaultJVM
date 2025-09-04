@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -31,6 +30,8 @@ kotlin {
         }
         commonMain.dependencies {
 
+            implementation("io.github.kdroidfilter:platformtools.core:0.6.1")
+            implementation("io.github.kdroidfilter:platformtools.darkmodedetector:0.6.1")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-beta05")
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
@@ -50,7 +51,6 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
-            implementation("com.mayakapps.compose:window-styler:0.3.3-SNAPSHOT")
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
         }

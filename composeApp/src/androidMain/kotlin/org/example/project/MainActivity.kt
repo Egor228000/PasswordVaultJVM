@@ -7,6 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import io.github.kdroidfilter.platformtools.darkmodedetector.isSystemInDarkMode
+import org.example.project.Theme.DarkColors
+import org.example.project.Theme.LightColors
+import org.example.project.Theme.MyAppTheme
 import org.example.project.navigation.NavigationBottom
 import org.example.project.viewModel.ViewModelPassword
 
@@ -17,8 +21,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navControll = rememberNavController()
-
-            NavigationBottom(navControll, viewModelPassword)
+            MyAppTheme(
+                colorScheme = if (isSystemInDarkMode()) DarkColors else LightColors
+            ) {
+                NavigationBottom(navControll, viewModelPassword)
+            }
         }
     }
 }

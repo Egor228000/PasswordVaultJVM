@@ -9,10 +9,11 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation.compose.rememberNavController
-import com.mayakapps.compose.windowstyler.WindowBackdrop
-import com.mayakapps.compose.windowstyler.WindowCornerPreference
-import com.mayakapps.compose.windowstyler.WindowFrameStyle
-import com.mayakapps.compose.windowstyler.WindowStyle
+import io.github.kdroidfilter.platformtools.darkmodedetector.isSystemInDarkMode
+import io.github.kdroidfilter.platformtools.darkmodedetector.windows.setWindowsAdaptiveTitleBar
+import org.example.project.Theme.DarkColors
+import org.example.project.Theme.LightColors
+import org.example.project.Theme.MyAppTheme
 import org.example.project.navigation.NavigationBottom
 import org.example.project.viewModel.ViewModelPassword
 import java.awt.Dimension
@@ -27,15 +28,15 @@ fun main() = application {
         title = "PasswordVaultJVM",
         state = state
     ) {
-        WindowStyle(
-            isDarkTheme = true,
-            backdropType = WindowBackdrop.Transparent,
-            frameStyle = WindowFrameStyle(cornerPreference = WindowCornerPreference.ROUNDED),
-        )
+        window.setWindowsAdaptiveTitleBar()
         window.minimumSize = Dimension(400, 900)
         val navControll = rememberNavController()
 
         val viewModelPassword = remember { ViewModelPassword() }
-        NavigationBottom(navControll, viewModelPassword)
+        MyAppTheme(
+            colorScheme = if (isSystemInDarkMode()) DarkColors else LightColors
+        ) {
+            NavigationBottom(navControll, viewModelPassword)
+        }
     }
 }

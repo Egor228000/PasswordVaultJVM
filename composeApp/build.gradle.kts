@@ -32,7 +32,7 @@ kotlin {
 
             implementation("io.github.kdroidfilter:platformtools.core:0.6.1")
             implementation("io.github.kdroidfilter:platformtools.darkmodedetector:0.6.1")
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-beta05")
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-rc01")
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
 

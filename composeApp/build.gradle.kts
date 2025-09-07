@@ -25,6 +25,7 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation("androidx.biometric:biometric-ktx:1.4.0-alpha02")
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
         }

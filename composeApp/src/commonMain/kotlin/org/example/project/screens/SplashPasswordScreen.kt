@@ -1,125 +1,92 @@
 package org.example.project.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import io.github.kdroidfilter.platformtools.OperatingSystem
-import io.github.kdroidfilter.platformtools.darkmodedetector.isSystemInDarkMode
 import io.github.kdroidfilter.platformtools.getOperatingSystem
+import org.example.project.BiometricButton
 import org.example.project.CustomUIComposable.CustomTextDescription
 import org.example.project.CustomUIComposable.CustomTextTitle
 import org.example.project.navigation.Screens
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SplashPasswordScreen(navControll: NavHostController) {
-
     var errorPassword = remember { mutableStateOf(false) }
-
-        Column {
-
-            CenterAlignedTopAppBar(
-                title = {
-                    Text("Менеджер паролей", color = Color.White)
-                },
-                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
-                modifier = Modifier
+    Column {
+        CenterAlignedTopAppBar(
+            title = {
+                Text("Менеджер паролей", color = Color.White)
+            },
+            colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
+            modifier = Modifier
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,//0xFF121212
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            CustomTextTitle(
+                "Введите ваш PIN-код",
             )
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,//0xFF121212
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
-                CustomTextTitle(
-                    "Введите ваш PIN-код",
-                )
-                Spacer(modifier = Modifier.padding(top = 4.dp))
-                CustomTextDescription(
-                    "Для доступа к вашим паролям",
+            Spacer(modifier = Modifier.padding(top = 4.dp))
+            CustomTextDescription(
+                "Для доступа к вашим паролям",
 
                 )
 
-                Spacer(modifier = Modifier.padding(top = 32.dp))
+            Spacer(modifier = Modifier.padding(top = 32.dp))
 
-                PinCodeInput(
-                    errorPassword = errorPassword
-                ) { pin ->
-                    if (pin == "22875") {
-                        navControll.navigate(Screens.Main.route)
-                    } else {
-                        errorPassword.value = true
-                    }
+            PinCodeInput(
+                errorPassword = errorPassword
+            ) { pin ->
+                if (pin == "22875") {
+                    navControll.navigate(Screens.Main.route)
+                } else {
+                    errorPassword.value = true
                 }
-                if (errorPassword.value) {
-                    Text("Указан неверный пароль", color = Color(0xFF990000))
-
-                }
-                Spacer(modifier = Modifier.padding(top = 8.dp))
-
-                when (val os = getOperatingSystem()) {
-                    OperatingSystem.WINDOWS -> {}
-                    OperatingSystem.LINUX -> {}
-                    OperatingSystem.ANDROID -> {
-                        TextButton(
-                            onClick = {
-
-                            }
-                        ) {
-                            Text("Использовать биометрию", color = Color(0xFFBA85FA))
-                        }
-                    }
-
-                    else -> {
-
-                    }
-                }
-
+            }
+            if (errorPassword.value) {
+                Text("Указан неверный пароль", color = Color(0xFF990000))
 
             }
+            Spacer(modifier = Modifier.padding(top = 8.dp))
+
+            when (val os = getOperatingSystem()) {
+                OperatingSystem.WINDOWS -> {}
+                OperatingSystem.LINUX -> {}
+                OperatingSystem.ANDROID -> {
+
+                    BiometricButton(
+                        onSuccess = { navControll.navigate(Screens.Main.route) },
+                        onFailure = { println("❌ Ошибка входа") }
+                    )
+                }
+                else -> {
+
+                }
+            }
         }
+    }
 }
 
 @Composable

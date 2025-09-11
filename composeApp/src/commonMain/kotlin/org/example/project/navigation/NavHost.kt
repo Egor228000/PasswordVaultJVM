@@ -2,6 +2,8 @@ package org.example.project.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -14,10 +16,10 @@ import org.example.project.screens.GeneratorScreen
 import org.example.project.screens.MainScreen
 import org.example.project.screens.SettingScreen
 import org.example.project.screens.SplashPasswordScreen
+import org.example.project.viewModel.ViewModelPassword
 
 
 enum class Screens(val route: String) {
-
     SplashPassword("splashPassword"),
     Main("main"),
     Detail("detail"),
@@ -26,42 +28,42 @@ enum class Screens(val route: String) {
 }
 
 @Composable
-fun NavHosting(navControll: NavHostController, paddingValues: PaddingValues) {
+fun NavHosting(navControll: NavHostController, paddingValues: PaddingValues, viewModelPassword: ViewModelPassword) {
     NavHost(
         navController = navControll,
-        startDestination = Screens.Main.route,
+        startDestination = Screens.SplashPassword.route,
         modifier = Modifier.padding(paddingValues),
         enterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Up,
-                animationSpec = tween(300)
-            )
+            fadeIn(animationSpec = tween(0))
         },
         exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Up,
-                animationSpec = tween(300)
-            )
+            fadeOut(animationSpec = tween(0))
         },
+        popEnterTransition = {
+            fadeIn(animationSpec = tween(0))
+        },
+        popExitTransition = {
+            fadeOut(animationSpec = tween(0))
+        }
 
     ) {
         composable(Screens.SplashPassword.route) {
-            SplashPasswordScreen()
+            SplashPasswordScreen(navControll)
         }
         composable(Screens.Main.route) {
-            MainScreen()
+            MainScreen(viewModelPassword)
         }
 
         composable(Screens.Detail.route) {
-            DetailScreen()
+            DetailScreen(viewModelPassword)
         }
 
         composable(Screens.Generator.route) {
-            GeneratorScreen()
+            GeneratorScreen(viewModelPassword)
         }
 
         composable(Screens.Setting.route) {
-            SettingScreen()
+            SettingScreen(viewModelPassword)
         }
     }
 

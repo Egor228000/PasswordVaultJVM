@@ -22,3 +22,9 @@ data class Entry(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val entry: Boolean
 )
+
+@Entity("secretKey")
+data class SecretKey(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val key: String
+)

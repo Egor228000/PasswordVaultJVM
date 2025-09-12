@@ -6,7 +6,13 @@ import androidx.room.RoomDatabase
 import org.example.project.room.AppDatabase
 
 
-fun getDatabaseBuilder(context: Context): RoomDatabase.Builder<AppDatabase> {
-    val appContext = context.applicationContext
+private lateinit var appContext: Context
+
+fun initDatabase(context: Context) {
+    appContext = context.applicationContext
+}
+
+actual fun provideDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
+    check(::appContext.isInitialized) { "Call initDatabase(context) before using database" }
     return Room.databaseBuilder(appContext, AppDatabase::class.java, "my_room.db")
 }

@@ -13,6 +13,9 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.pkg.jetbrains.space/public/p/androidx/dev")
+
     }
 }
 
@@ -27,6 +30,9 @@ dependencyResolutionManagement {
         }
         mavenCentral()
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.pkg.jetbrains.space/public/p/androidx/dev")
+
     }
 }
 

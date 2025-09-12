@@ -28,12 +28,12 @@ kotlin {
             implementation("androidx.biometric:biometric-ktx:1.4.0-alpha02")
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
         }
         commonMain.dependencies {
-
+            implementation("org.jetbrains.androidx.navigation3:navigation3-ui:1.0.0+dev2932")
             implementation("io.github.kdroidfilter:platformtools.core:0.6.1")
             implementation("io.github.kdroidfilter:platformtools.darkmodedetector:0.6.1")
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-rc01")
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
 
@@ -52,8 +52,10 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
+
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+
         }
     }
 }
@@ -65,6 +67,7 @@ android {
     defaultConfig {
         applicationId = "org.example.project"
         minSdk = libs.versions.android.minSdk.get().toInt()
+        //noinspection OldTargetApi
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"

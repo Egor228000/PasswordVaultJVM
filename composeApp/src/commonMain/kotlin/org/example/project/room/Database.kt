@@ -4,7 +4,7 @@ import androidx.room.*
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 
-@Database(entities = [PasswordCard::class], version = 1)
+@Database(entities = [PasswordCard::class, PinCode::class, Entry::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun passwordCardDao(): PasswordCardDao
 

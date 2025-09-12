@@ -11,3 +11,14 @@ data class PasswordCard(
     val password: String,
     val avatar: Int
 )
+@Entity("pincode")
+data class PinCode(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val pinCode: String
+)
+
+@Entity("entry")
+data class Entry(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val entry: Boolean
+)

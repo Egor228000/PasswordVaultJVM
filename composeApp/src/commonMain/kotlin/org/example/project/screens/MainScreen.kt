@@ -18,7 +18,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.example.project.CustomUIComposable.CustomTextDescription
+import org.example.project.CustomUIComposable.CustomTextTitle
 import org.example.project.utils.handCursor
+import org.example.project.viewModel.ViewModelPassword
 import org.jetbrains.compose.resources.painterResource
 import passwordvaultjvm.composeapp.generated.resources.Res
 import passwordvaultjvm.composeapp.generated.resources.add
@@ -28,66 +31,61 @@ import passwordvaultjvm.composeapp.generated.resources.search
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModelPassword: ViewModelPassword) {
 
     var searchPassword by remember { mutableStateOf("") }
 
-    Column {
+    Column(
+    ) {
 
         CenterAlignedTopAppBar(
             title = {
-                Text("Пароли", color = Color.White)
+                Text("Пароли", color = MaterialTheme.colorScheme.primary)
             },
-            colors = TopAppBarDefaults.topAppBarColors(Color(0xFF121212)),
+            colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
         )
         Column(
             modifier = Modifier
-                .background(Color(0xFF121212))
+                .background(MaterialTheme.colorScheme.secondary)
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .height(80.dp)
+                    .height(100.dp)
             ) {
 
-                OutlinedTextField(
+                CustomOutlinedTextField(
                     value = searchPassword,
                     onValueChange = { searchPassword = it },
-                    shape = RoundedCornerShape(15),
-                    placeholder = { Text("Поиск паролей", color = Color(0xFFB8B8B8)) },
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color(0xFFB8B8B8),
-                        unfocusedContainerColor = Color(0xFF1E1E1E),
-                        focusedContainerColor = Color(0xFF1E1E1E),
-                        focusedIndicatorColor = Color(0xFFBA85FA)
-                    ),
-                    textStyle = TextStyle(
-                        fontSize = 17.sp
-                    ),
+                    placeholder = "Поиск паролей",
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .fillMaxWidth(),
+                    textTitle = "",
+                    singleLine = true,
                     leadingIcon = {
                         Icon(
                             painter = painterResource(Res.drawable.search),
                             null,
                             tint = Color(0xFFB8B8B8)
                         )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter)
+                    }
                 )
+
+
             }
             Box {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(300.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(bottom = 76.dp)
+                    contentPadding = PaddingValues(bottom = 86.dp)
                 ) {
                     items(30) {
-                        var isHovered = remember { mutableStateOf(false) }
-                        CardPassword(isHovered)
+                        var isHovered = mutableStateOf(false)
+                        CardPassword(isHovered = isHovered)
                     }
                 }
 
@@ -101,6 +99,7 @@ fun MainScreen() {
                         onClick = {},
                         containerColor = Color(0xFFBA85FA),
                         modifier = Modifier
+                            .padding(bottom = 16.dp)
                             .handCursor()
 
                     ) {
@@ -120,8 +119,8 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
 
         shape = RoundedCornerShape(15),
         colors = CardDefaults.cardColors(
-            if (!isHovered.value) Color(0xFF1E1E1E)
-            else Color(0xFF313131)
+            if (!isHovered.value) MaterialTheme.colorScheme.primaryContainer
+            else MaterialTheme.colorScheme.primaryContainer.copy(0.3f)
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -146,13 +145,13 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(15))
-                    .background(Color.Black)
+                    .background(MaterialTheme.colorScheme.onSecondary)
                     .size(50.dp)
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.add),
                     null,
-                    tint = Color(0xFFB8B8B8),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .align(Alignment.Center)
                 )
@@ -160,21 +159,18 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier
+
                     .padding(start = 16.dp)
             ) {
                 val description = "wsdfsdfsddssaasassssdf"
-                Text(
+                CustomTextTitle(
                     "Google",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = if (description.length <= 21) description else description.take(18).plus("...")
-                    ,
-                    color = Color(0xFFB8B8B8),
-                    fontSize = 14.sp,
+
+                CustomTextDescription(
+                    text = if (description.length <= 21) description else description.take(18).plus("..."),
                 )
+
             }
             Column(
                 horizontalAlignment = Alignment.End,
@@ -190,7 +186,7 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
                     Icon(
                         painter = painterResource(Res.drawable.copy),
                         null,
-                        tint = Color(0xFFB8B8B8)
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
 
@@ -199,7 +195,6 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
 
     }
 }
-
 
 
 data class CardPasswordData(

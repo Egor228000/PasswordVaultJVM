@@ -1,6 +1,7 @@
 package org.example.project.viewModel
 
 import androidx.lifecycle.ViewModel
+import kotlin.math.pow
 import kotlin.random.Random
 
 class ViewModelPassword(): ViewModel() {
@@ -43,5 +44,45 @@ class ViewModelPassword(): ViewModel() {
         }
 
         return result.joinToString("").take(length)
+    }
+    fun estimateCrackTime(password: String): String {
+        if (password.isEmpty()) return "Мгновенно"
+
+        var hasDigits = false
+        var hasLower = false
+        var hasUpper = false
+        var hasSpecial = false
+
+        for (char in password) {
+            when {
+                char.isDigit() -> hasDigits = true
+                char.isLowerCase() -> hasLower = true
+                char.isUpperCase() -> hasUpper = true
+                else -> hasSpecial = true
+            }
+        }
+
+        val charsetSize = when {
+            hasSpecial -> 80
+            hasUpper && hasLower -> 62
+            hasUpper || hasLower -> 36
+            hasDigits -> 10
+            else -> 26
+        }
+
+        val combinations = charsetSize.toDouble().pow(password.length.toDouble())
+
+        val attemptsPerSecond = 1e12
+        val seconds = combinations / attemptsPerSecond
+
+        return when {
+            seconds < 1 -> "Менее секунды"
+            seconds < 60 -> "${seconds.toInt()} секунд"
+            seconds < 3600 -> "${(seconds / 60).toInt()} минут"
+            seconds < 86400 -> "${(seconds / 3600).toInt()} часов"
+            seconds < 31536000 -> "${(seconds / 86400).toInt()} дней"
+            seconds < 3.15576e16 -> "${(seconds / 3.15576e7).toInt()} лет"
+            else -> "Миллионы лет"
+        }
     }
 }

@@ -13,7 +13,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         fun getRoomDatabase(
-            builder: RoomDatabase.Builder<AppDatabase>
+            builder: Builder<AppDatabase>
         ): AppDatabase {
             return builder
                 .setDriver(BundledSQLiteDriver())
@@ -29,7 +29,7 @@ object DatabaseManager {
 
     private val dao = db.passwordCardDao()
 
-    fun insertPasswordCard(name: String, description: String, password: String, avatar: Int) {
+    fun insertPasswordCard(name: String, description: String, password: String, avatar: String) {
         CoroutineScope(Dispatchers.IO).launch {
             dao.insert(PasswordCard(name = name, description = description, password = password, avatar = avatar))
         }

@@ -1,24 +1,24 @@
 [versions]
 agp = "8.11.0"
-android-compileSdk = "35"
+android-compileSdk = "36"
 android-minSdk = "24"
+#noinspection OldTargetApi
 android-targetSdk = "35"
-androidx-activity = "1.10.1"
+androidx-activity = "1.11.0"
 androidx-appcompat = "1.7.1"
-androidx-core = "1.16.0"
-androidx-espresso = "3.6.1"
-androidx-lifecycle = "2.9.1"
-androidx-testExt = "1.2.1"
-composeHotReload = "1.0.0-beta04"
+androidx-core = "1.17.0"
+androidx-espresso = "3.7.0"
+androidx-lifecycle = "2.9.3"
+androidx-testExt = "1.3.0"
+composeHotReload = "1.0.0-beta06"
 composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 kotlin = "2.2.10"
 kotlinx-coroutines = "1.10.2"
 
-room = "2.7.2"
-sqlite = "2.5.2"
+room = "2.8.0"
+sqlite = "2.6.0"
 ksp = "2.2.10-2.0.2"
-
 [libraries]
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

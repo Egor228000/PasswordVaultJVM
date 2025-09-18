@@ -1,12 +1,15 @@
 package org.example.project.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -14,12 +17,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation3.runtime.NavKey
+import org.example.project.CustomUIComposable.CustomOutlinedTextField
 import org.example.project.CustomUIComposable.CustomTextDescription
 import org.example.project.CustomUIComposable.CustomTextTitle
+import org.example.project.navigation.Detail
+import org.example.project.room.DatabaseManager
+import org.example.project.room.PasswordCard
 import org.example.project.utils.handCursor
 import org.example.project.viewModel.ViewModelPassword
 import org.jetbrains.compose.resources.painterResource
@@ -29,10 +35,18 @@ import passwordvaultjvm.composeapp.generated.resources.copy
 import passwordvaultjvm.composeapp.generated.resources.search
 
 
+@Suppress("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModelPassword: ViewModelPassword) {
+fun MainScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateList<NavKey>) {
 
+    var listPassword = remember { mutableStateListOf<PasswordCard>() }
+
+    /*LaunchedEffect(listPassword.isNotEmpty()) {
+        DatabaseManager.getAllCards { list ->
+            listPassword.addAll(list)
+        }
+    }*/
     var searchPassword by remember { mutableStateOf("") }
 
     Column(
@@ -48,8 +62,8 @@ fun MainScreen(viewModelPassword: ViewModelPassword) {
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.secondary)
-                .fillMaxSize()
                 .padding(horizontal = 16.dp)
+                .fillMaxHeight()
         ) {
             Box(
                 modifier = Modifier
@@ -71,41 +85,38 @@ fun MainScreen(viewModelPassword: ViewModelPassword) {
                             null,
                             tint = Color(0xFFB8B8B8)
                         )
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {backStack.add(Detail(777))},
+                            colors = IconButtonDefaults.iconButtonColors(Color(0xFFBA85FA)),
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .handCursor()
+                        ) {
+                            Icon(painter = painterResource(Res.drawable.add), null)
+
+                        }
                     }
                 )
-
-
             }
-            Box {
+
+            Box(
+                modifier = Modifier
+            ) {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(300.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(bottom = 86.dp)
                 ) {
-                    items(30) {
+                    items(listPassword) { card ->
                         var isHovered = mutableStateOf(false)
-                        CardPassword(isHovered = isHovered)
+                        CardPassword(isHovered = isHovered, backStack, card)
                     }
                 }
 
-                Column(
-                    verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.End,
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    FloatingActionButton(
-                        onClick = {},
-                        containerColor = Color(0xFFBA85FA),
-                        modifier = Modifier
-                            .padding(bottom = 16.dp)
-                            .handCursor()
 
-                    ) {
-                        Icon(painter = painterResource(Res.drawable.add), null)
-                    }
-                }
             }
 
         }
@@ -114,7 +125,11 @@ fun MainScreen(viewModelPassword: ViewModelPassword) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CardPassword(isHovered: MutableState<Boolean>) {
+fun CardPassword(
+    isHovered: MutableState<Boolean>,
+    backStack: SnapshotStateList<NavKey>,
+    card: PasswordCard
+) {
     Card(
 
         shape = RoundedCornerShape(15),
@@ -124,6 +139,7 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
         ),
         modifier = Modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(15))
             .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
@@ -136,6 +152,7 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
                     }
                 }
             }
+            .clickable(onClick = { backStack.add(Detail(card.id)) })
 
     ) {
         Row(
@@ -149,7 +166,7 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
                     .size(50.dp)
             ) {
                 Icon(
-                    painter = painterResource(Res.drawable.add),
+                    painter = painterResource(card.avatar),
                     null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
@@ -162,9 +179,9 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
 
                     .padding(start = 16.dp)
             ) {
-                val description = "wsdfsdfsddssaasassssdf"
+                val description = card.description
                 CustomTextTitle(
-                    "Google",
+                    card.name,
                 )
 
                 CustomTextDescription(
@@ -172,6 +189,7 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
                 )
 
             }
+            val password = card.password
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center,
@@ -197,12 +215,6 @@ fun CardPassword(isHovered: MutableState<Boolean>) {
 }
 
 
-data class CardPasswordData(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val copy: String,
-    val icon: Int
-)
+
 
 // commonMain

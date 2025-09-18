@@ -9,7 +9,7 @@ data class PasswordCard(
     val name: String,
     val description: String,
     val password: String,
-    val avatar: Int
+    val avatar: String
 )
 @Entity("pincode")
 data class PinCode(
@@ -28,3 +28,4 @@ data class SecretKey(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val key: String
 )
+

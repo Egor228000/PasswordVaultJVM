@@ -1,14 +1,8 @@
 package org.example.project.navigation
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Modifier
-import androidx.navigation3.runtime.NavEntryDecorator
 
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
@@ -46,7 +40,7 @@ fun NavHosting(backStack: SnapshotStateList<NavKey>, paddingValues: PaddingValue
                 SplashPasswordScreen(backStack)
             }
             entry<Main> {
-                MainScreen(viewModelPassword)
+                MainScreen(viewModelPassword, backStack)
             }
             entry<Generator> {
                 GeneratorScreen(viewModelPassword)
@@ -54,8 +48,8 @@ fun NavHosting(backStack: SnapshotStateList<NavKey>, paddingValues: PaddingValue
             entry<Setting> {
                 SettingScreen(viewModelPassword)
             }
-            entry<Detail> {
-                DetailScreen(viewModelPassword)
+            entry<Detail> {key ->
+                DetailScreen(viewModelPassword, backStack, key)
             }
         }
     )

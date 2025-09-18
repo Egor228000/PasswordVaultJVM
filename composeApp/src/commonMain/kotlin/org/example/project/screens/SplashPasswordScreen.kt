@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -17,17 +18,17 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation3.runtime.NavKey
 import io.github.kdroidfilter.platformtools.OperatingSystem
 import io.github.kdroidfilter.platformtools.getOperatingSystem
 import org.example.project.BiometricButton
 import org.example.project.CustomUIComposable.CustomTextDescription
 import org.example.project.CustomUIComposable.CustomTextTitle
-import org.example.project.navigation.Screens
+import org.example.project.navigation.Main
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SplashPasswordScreen(navControll: NavHostController) {
+fun SplashPasswordScreen(backStack: SnapshotStateList<NavKey>) {
     var errorPassword = remember { mutableStateOf(false) }
     Column {
         CenterAlignedTopAppBar(
@@ -60,7 +61,7 @@ fun SplashPasswordScreen(navControll: NavHostController) {
                 errorPassword = errorPassword
             ) { pin ->
                 if (pin == "22875") {
-                    navControll.navigate(Screens.Main.route)
+                    backStack.add(Main)
                 } else {
                     errorPassword.value = true
                 }
@@ -77,7 +78,7 @@ fun SplashPasswordScreen(navControll: NavHostController) {
                 OperatingSystem.ANDROID -> {
 
                     BiometricButton(
-                        onSuccess = { navControll.navigate(Screens.Main.route) },
+                        onSuccess = { backStack.add(Main) },
                         onFailure = { println("❌ Ошибка входа") }
                     )
                 }

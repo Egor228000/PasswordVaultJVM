@@ -14,6 +14,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import org.example.project.CustomUIComposable.CustomTextDescription
+import org.example.project.CustomUIComposable.CustomTextTitle
 import org.example.project.utils.handCursor
 import org.example.project.viewModel.ViewModelPassword
 import org.jetbrains.compose.resources.painterResource
@@ -49,22 +51,22 @@ fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
     Column {
         CenterAlignedTopAppBar(
             title = {
-                Text("Генератор паролей", color = Color.White)
+                Text("Генератор паролей", color = MaterialTheme.colorScheme.primary)
             },
-            colors = TopAppBarDefaults.topAppBarColors(Color(0xFF121212)),
+            colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .background(Color(0xFF121212))
+                .background(MaterialTheme.colorScheme.secondary)
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
             Card(
                 shape = RoundedCornerShape(15),
                 colors = CardDefaults.cardColors(
-                    Color(0xFF1E1E1E)
+                    MaterialTheme.colorScheme.primaryContainer
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -76,12 +78,11 @@ fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
                         .padding(16.dp)
 
                 ) {
-                    Text(
+                    CustomTextTitle(
                         password,
-                        fontSize = 18.sp,
-                        color = Color.White,
                         modifier = Modifier
                             .align(Alignment.CenterStart)
+
                     )
                     Row(
                         horizontalArrangement = Arrangement.End,
@@ -102,7 +103,7 @@ fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
                             Icon(
                                 painter = painterResource(Res.drawable.restart),
                                 null,
-                                tint = Color(0xFFBA85FA)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                         IconButton(
@@ -117,7 +118,7 @@ fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
                             Icon(
                                 painter = painterResource(Res.drawable.copy),
                                 null,
-                                tint = Color(0xFFBA85FA)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
@@ -128,7 +129,7 @@ fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
             Card(
                 shape = RoundedCornerShape(5),
                 colors = CardDefaults.cardColors(
-                    Color(0xFF1E1E1E)
+                    MaterialTheme.colorScheme.primaryContainer
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -143,47 +144,45 @@ fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-                        Text(
+                        CustomTextTitle(
                             "Длина пароля",
-                            color = Color(0xFFB8B8B8),
                             fontSize = 16.sp,
                             modifier = Modifier
                                 .align(Alignment.TopStart)
                         )
-                        Text(
+
+                        CustomTextTitle(
                             slideNumber.toString(),
-                            color = Color.White,
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.W500,
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
                         )
+
                     }
 
                     Slider(
                         stateSlider,
                         colors = SliderDefaults.colors(
-                            thumbColor = Color(0xFFBA85FA),
-                            activeTrackColor = Color(0xFFBA85FA),
+                            thumbColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            activeTrackColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     )
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-                        Text(
+                        CustomTextDescription(
                             "4",
-                            color = Color(0xFFB8B8B8),
                             fontSize = 12.sp,
                             modifier = Modifier
                                 .align(Alignment.TopStart)
                         )
-                        Text(
+                        CustomTextDescription(
                             "20",
-                            color = Color(0xFFB8B8B8),
                             fontSize = 12.sp,
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
+
                         )
                     }
 
@@ -200,8 +199,10 @@ fun GeneratorScreen(viewModelPassword: ViewModelPassword) {
                         includeSymbols,
                         false
                     )
+                    CustomTextDescription(
+                        text = " Взламают через: ${viewModelPassword.estimateCrackTime(password)}"
 
-
+                    )
                 }
             }
         }
@@ -223,13 +224,14 @@ fun FiltersGeneratorPassword(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(
+            CustomTextTitle(
                 name,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.W500,
                 modifier = Modifier
                     .align(Alignment.CenterStart),
-                color = Color.White,
-                fontSize = 17.sp
             )
+
             Switch(
                 checked = onOrof.value,
                 onCheckedChange =  {onOrof.value = it},

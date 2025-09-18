@@ -76,7 +76,7 @@ class ViewModelPassword(): ViewModel() {
         val seconds = combinations / attemptsPerSecond
 
         return when {
-            seconds < 1 -> "Менее секунды"
+            seconds < 1 -> "менее секунды"
             seconds < 60 -> "${seconds.toInt()} секунд"
             seconds < 3600 -> "${(seconds / 60).toInt()} минут"
             seconds < 86400 -> "${(seconds / 3600).toInt()} часов"

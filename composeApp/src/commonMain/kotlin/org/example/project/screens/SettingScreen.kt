@@ -48,13 +48,13 @@ fun SettingScreen(viewModelPassword: ViewModelPassword) {
             title = {
                 Text("Настройки", color = Color.White)
             },
-            colors = TopAppBarDefaults.topAppBarColors(Color(0xFF121212)),
+            colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .background(Color(0xFF121212))
+                .background(MaterialTheme.colorScheme.secondary)
                 .fillMaxSize()
                 .padding(16.dp)
         ) {

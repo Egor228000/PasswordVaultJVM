@@ -9,7 +9,7 @@ data class PasswordCard(
     val name: String,
     val description: String,
     val password: String,
-    val avatar: String
+    val avatar: Int
 )
 @Entity("pincode")
 data class PinCode(

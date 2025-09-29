@@ -15,7 +15,7 @@ import org.example.project.room.SecretKey
 
 @Database(
     entities = [PasswordCard::class, PinCode::class, Entry::class, SecretKey::class],
-    version = 1
+    version = 4
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -35,21 +35,22 @@ object DatabaseManager {
         database.passwordCardDao()
     }
 
-    fun insertPasswordCard(
+    suspend fun insertPasswordCard(
         name: String,
         description: String,
         password: String,
-        avatar: String
+        avatar: Int
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            dao.insert(
-                PasswordCard(
-                    name = name,
-                    description = description,
-                    password = password,
-                    avatar = avatar
-                )
+        dao.insert(
+            PasswordCard(
+                name = name,
+                description = description,
+                password = password,
+                avatar = avatar
             )
-        }
+        )
+    }
+    suspend fun getAllPasswordCards(): List<PasswordCard> {
+        return dao.getAll()
     }
 }

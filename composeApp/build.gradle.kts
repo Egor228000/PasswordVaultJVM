@@ -25,15 +25,15 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
-            implementation("androidx.biometric:biometric-ktx:1.4.0-alpha02")
+            implementation(libs.androidx.biometric.ktx)
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
         }
         commonMain.dependencies {
-            implementation("org.jetbrains.androidx.navigation3:navigation3-ui:1.0.0+dev2932")
-            implementation("io.github.kdroidfilter:platformtools.core:0.6.1")
-            implementation("io.github.kdroidfilter:platformtools.darkmodedetector:0.6.1")
+            implementation(libs.navigation3.ui)
+            implementation(libs.platformtools.core)
+            implementation(libs.platformtools.darkmodedetector)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
 
@@ -52,7 +52,6 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
-
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
 
@@ -91,7 +90,6 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
     add("kspAndroid", libs.androidx.room.compiler)
-
 }
 room {
     schemaDirectory("$projectDir/schemas")

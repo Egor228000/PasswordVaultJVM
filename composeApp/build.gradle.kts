@@ -89,6 +89,7 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+        // add("kspJvm", libs.androidx.room.compiler)
     add("kspAndroid", libs.androidx.room.compiler)
 }
 room {

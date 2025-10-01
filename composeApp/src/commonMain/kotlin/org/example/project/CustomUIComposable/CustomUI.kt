@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,9 @@ fun CustomTextDescription(
         fontSize = fontSize,
         color = color,
         fontWeight = fontWeight,
-        modifier = modifier
+        modifier = modifier,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1
     )
 }
 

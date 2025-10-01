@@ -21,7 +21,6 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        initDatabase(this)
 
         setContent {
             val backStack = remember { mutableStateListOf<NavKey>(SplashPassword) }

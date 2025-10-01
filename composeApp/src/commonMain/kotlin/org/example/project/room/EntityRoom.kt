@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class PasswordCard(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
+    val login: String,
     val description: String,
     val password: String,
     val avatar: Int

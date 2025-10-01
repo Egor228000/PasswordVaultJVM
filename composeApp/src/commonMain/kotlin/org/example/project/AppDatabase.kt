@@ -4,18 +4,11 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.example.project.room.Entry
-import org.example.project.room.PasswordCard
-import org.example.project.room.PasswordCardDao
-import org.example.project.room.PinCode
-import org.example.project.room.SecretKey
+import org.example.project.room.*
 
 @Database(
     entities = [PasswordCard::class, PinCode::class, Entry::class, SecretKey::class],
-    version = 4
+    version = 7
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -37,6 +30,7 @@ object DatabaseManager {
 
     suspend fun insertPasswordCard(
         name: String,
+        login: String,
         description: String,
         password: String,
         avatar: Int
@@ -44,6 +38,7 @@ object DatabaseManager {
         dao.insert(
             PasswordCard(
                 name = name,
+                login = login,
                 description = description,
                 password = password,
                 avatar = avatar
@@ -52,5 +47,9 @@ object DatabaseManager {
     }
     suspend fun getAllPasswordCards(): List<PasswordCard> {
         return dao.getAll()
+    }
+
+    suspend fun getPasswordCardById(id: Long): PasswordCard? {
+        return dao.getById(id)
     }
 }

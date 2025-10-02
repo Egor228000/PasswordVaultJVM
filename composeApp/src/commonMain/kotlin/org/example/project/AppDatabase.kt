@@ -52,4 +52,24 @@ object DatabaseManager {
     suspend fun getPasswordCardById(id: Long): PasswordCard? {
         return dao.getById(id)
     }
+
+    suspend fun insertSecretKey(key: String) {
+       dao.insertKey(
+            SecretKey(key = key)
+        )
+    }
+    suspend fun insertPinCode(code: String) {
+        dao.insertPinCode(
+            PinCode(
+                pinCode = code
+            )
+        )
+    }
+    suspend fun insertEntry(entry: Boolean) {
+        dao.insertEntry(
+            Entry(
+                entry = entry
+            )
+        )
+    }
 }

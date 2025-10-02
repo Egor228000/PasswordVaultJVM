@@ -14,55 +14,58 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.isBackPressed
-import androidx.compose.ui.input.pointer.isForwardPressed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
+import kotlinx.coroutines.launch
 import org.example.project.CustomUIComposable.CustomButton
 import org.example.project.CustomUIComposable.CustomOutlinedTextField
 import org.example.project.CustomUIComposable.CustomTextDescription
+import org.example.project.DatabaseManager
 import org.example.project.navigation.Detail
 import org.example.project.navigation.Main
-import org.example.project.room.DatabaseManager
+import org.example.project.room.PasswordCard
 import org.example.project.utils.handCursor
 import org.example.project.viewModel.ViewModelPassword
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import passwordvaultjvm.composeapp.generated.resources.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateList<NavKey>, key: Detail) {
-    val iconList = remember {
-        mutableStateListOf(
-            Res.drawable.bank,
-            Res.drawable.discord_svgrepo_com,
-            Res.drawable.docker,
-            Res.drawable.ebay,
-            Res.drawable.github,
-            Res.drawable.gmail,
-            Res.drawable.google,
-            Res.drawable.googlecalendar,
-            Res.drawable.googleplay,
-            Res.drawable.insta,
-            Res.drawable.netflix,
-            Res.drawable.openai,
-            Res.drawable.skypeforbusiness,
-            Res.drawable.slack,
-            Res.drawable.spotify,
-            Res.drawable.stackoverflow,
-            Res.drawable.steam,
-            Res.drawable.telegram,
-            Res.drawable.tiktok,
-            Res.drawable.vk,
-            Res.drawable.whatsapp,
-            Res.drawable.windows,
-            Res.drawable.youtube
-        )
-    }
 
-    var selectedIcon by remember { mutableStateOf<DrawableResource>(Res.drawable.youtube) }
+    var cardPassword = remember { mutableStateOf<PasswordCard?>(null) }
+
+    val iconMap = mapOf(
+        1 to Res.drawable.bank,
+        2 to Res.drawable.discord_svgrepo_com,
+        3 to Res.drawable.docker,
+        4 to Res.drawable.ebay,
+        5 to Res.drawable.github,
+        6 to Res.drawable.gmail,
+        7 to Res.drawable.google,
+        8 to Res.drawable.googlecalendar,
+        9 to Res.drawable.googleplay,
+        10 to Res.drawable.insta,
+        11 to Res.drawable.netflix,
+        12 to Res.drawable.openai,
+        13 to Res.drawable.skypeforbusiness,
+        14 to Res.drawable.slack,
+        15 to Res.drawable.spotify,
+        16 to Res.drawable.stackoverflow,
+        17 to Res.drawable.steam,
+        18 to Res.drawable.telegram,
+        19 to Res.drawable.tiktok,
+        20 to Res.drawable.vk,
+        21 to Res.drawable.whatsapp,
+        22 to Res.drawable.windows,
+        23 to Res.drawable.youtube
+    )
+
+
+    var selectedIconId by remember { mutableStateOf(23) }
+
 
     var nameService by remember {
         mutableStateOf("")
@@ -76,7 +79,22 @@ fun DetailScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateL
     var description by remember {
         mutableStateOf("")
     }
+    LaunchedEffect(key.id.toInt() != 777) {
+        val card = DatabaseManager.getPasswordCardById(key.id)
+        cardPassword.value = card
 
+        card?.let {
+            selectedIconId = it.avatar
+            nameService = it.name
+            loginEmail = it.login
+            password = it.password
+            description = it.description
+        }
+    }
+
+
+
+    val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .pointerInput(Unit) {
@@ -182,11 +200,13 @@ fun DetailScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateL
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(iconList) { icon ->
-                        val isSelected = selectedIcon == icon
+                    items(iconMap.keys.toList()) { id ->
+                        val isSelected = selectedIconId == id
+                        val icon = iconMap[id]!!
+
 
                         IconButton(
-                            onClick = { selectedIcon = icon },
+                            onClick = { selectedIconId = id },
                             modifier = Modifier
                                 .size(60.dp)
                                 .padding(4.dp)
@@ -226,12 +246,16 @@ fun DetailScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateL
                     CustomButton(
                         text = "Сохранить",
                         onClick = {
-                            DatabaseManager.insertPasswordCard(
-                                name = nameService,
-                                description = description,
-                                password = password,
-                                avatar = selectedIcon.toString()
-                            )
+                            scope.launch {
+                                DatabaseManager.insertPasswordCard(
+                                    name = nameService,
+                                    login = loginEmail,
+                                    description = description,
+                                    password = password,
+                                    avatar = selectedIconId
+                                )
+                            }
+
                         },
                         modifier = Modifier.weight(1f).padding(start = 8.dp),
                         color = ButtonDefaults.buttonColors(

@@ -123,7 +123,8 @@ fun CustomButton(
         colors = color
     ) {
         CustomTextTitle(
-            text = text
+            text = text,
+            fontWeight = FontWeight.W400
         )
     }
 

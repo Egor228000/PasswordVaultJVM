@@ -84,8 +84,8 @@ fun DetailScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateL
         cardPassword.value = card
 
         card?.let {
-            selectedIconId = it.avatar
             nameService = it.name
+            selectedIconId = it.avatar
             loginEmail = it.login
             password = it.password
             description = it.description
@@ -212,7 +212,7 @@ fun DetailScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateL
                                 .padding(4.dp)
                                 .border(
                                     width = if (isSelected) 2.dp else 0.dp,
-                                    color = if (isSelected) Color.Blue else Color.Transparent,
+                                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else Color.Transparent,
                                     shape = CircleShape
                                 )
                         ) {
@@ -240,20 +240,34 @@ fun DetailScreen(viewModelPassword: ViewModelPassword, backStack: SnapshotStateL
                         onClick = { backStack.add(Main) },
                         modifier = Modifier.weight(1f).padding(end = 8.dp),
                         color = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFB8B8B8)
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
                         )
                     )
                     CustomButton(
                         text = "Сохранить",
                         onClick = {
                             scope.launch {
-                                DatabaseManager.insertPasswordCard(
-                                    name = nameService,
-                                    login = loginEmail,
-                                    description = description,
-                                    password = password,
-                                    avatar = selectedIconId
-                                )
+                                if (key.id.toInt() == 777) {
+                                    // создаём новую карточку
+                                    DatabaseManager.insertPasswordCard(
+                                        name = nameService,
+                                        login = loginEmail,
+                                        description = description,
+                                        password = password,
+                                        avatar = selectedIconId
+                                    )
+                                } else {
+                                    // обновляем существующую
+                                    DatabaseManager.updatePasswordCard(
+                                        id = key.id,
+                                        name = nameService,
+                                        login = loginEmail,
+                                        description = description,
+                                        password = password,
+                                        avatar = selectedIconId
+                                    )
+                                }
+                                backStack.add(Main)
                             }
 
                         },

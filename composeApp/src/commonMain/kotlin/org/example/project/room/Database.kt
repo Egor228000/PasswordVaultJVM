@@ -24,11 +24,13 @@ interface PasswordCardDao {
 
     @Query("DELETE FROM passwordcard WHERE id = :id")
     suspend fun deleteById(id: Long)
-    @Insert
-    suspend fun insertKey(key: SecretKey): String
 
     @Insert
-    suspend fun insertPinCode(code: PinCode): String
+    suspend fun insertKey(key: SecretKey)
+
+    @Insert
+    suspend fun insertPinCode(code: PinCode)
+
     @Update
     suspend fun updatePinCode(code: PinCode)
 
@@ -36,6 +38,7 @@ interface PasswordCardDao {
 
     @Insert
     suspend fun insertEntry(entry: Entry)
+
     @Update
     suspend fun updateEntry(code: PinCode)
 }

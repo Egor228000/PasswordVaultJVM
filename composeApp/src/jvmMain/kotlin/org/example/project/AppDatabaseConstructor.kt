@@ -9,7 +9,6 @@ import java.io.File
 actual object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
     actual override fun initialize(): AppDatabase {
         val dbFile = File(System.getProperty("java.io.tmpdir"), "my_room.db")
-        if (dbFile.exists()) dbFile.delete()
         return Room.databaseBuilder<AppDatabase>(
             name = dbFile.absolutePath
         )

@@ -45,6 +45,24 @@ object DatabaseManager {
             )
         )
     }
+    suspend fun updatePasswordCard(
+        id: Long,
+        name: String,
+        login: String,
+        description: String,
+        password: String,
+        avatar: Int
+    ) {
+        val card = PasswordCard(
+            id = id,
+            name = name,
+            login = login,
+            description = description,
+            password = password,
+            avatar = avatar
+        )
+        dao.update(card)
+    }
     suspend fun getAllPasswordCards(): List<PasswordCard> {
         return dao.getAll()
     }

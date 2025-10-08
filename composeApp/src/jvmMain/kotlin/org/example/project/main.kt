@@ -15,8 +15,8 @@ import io.github.kdroidfilter.platformtools.darkmodedetector.windows.setWindowsA
 import org.example.project.Theme.DarkColors
 import org.example.project.Theme.LightColors
 import org.example.project.Theme.MyAppTheme
+import org.example.project.navigation.Main
 import org.example.project.navigation.NavigationBottom
-import org.example.project.navigation.Setting
 import org.example.project.viewModel.ViewModelPassword
 import java.awt.Dimension
 
@@ -32,7 +32,7 @@ fun main() = application {
     ) {
         window.setWindowsAdaptiveTitleBar()
         window.minimumSize = Dimension(400, 900)
-        val backStack = remember { mutableStateListOf<NavKey>(Setting) }
+        val backStack = remember { mutableStateListOf<NavKey>(Main) }
 
 
         val viewModelPassword = remember { ViewModelPassword() }

@@ -12,6 +12,7 @@ import io.github.kdroidfilter.platformtools.darkmodedetector.isSystemInDarkMode
 import org.example.project.Theme.DarkColors
 import org.example.project.Theme.LightColors
 import org.example.project.Theme.MyAppTheme
+import org.example.project.navigation.Main
 import org.example.project.navigation.NavigationBottom
 import org.example.project.navigation.SplashPassword
 import org.example.project.viewModel.ViewModelPassword
@@ -21,9 +22,9 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
+        AppDatabaseConstructor.build(this)
         setContent {
-            val backStack = remember { mutableStateListOf<NavKey>(SplashPassword) }
+            val backStack = remember { mutableStateListOf<NavKey>(Main) }
 
             MyAppTheme(
                 colorScheme = if (isSystemInDarkMode()) DarkColors else LightColors

@@ -87,8 +87,8 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-        // add("kspJvm", libs.androidx.room.compiler)
     add("kspAndroid", libs.androidx.room.compiler)
+    add("kspJvm", libs.androidx.room.compiler)
 }
 room {
     schemaDirectory("$projectDir/schemas")

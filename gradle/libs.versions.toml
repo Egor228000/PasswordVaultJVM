@@ -1,7 +1,7 @@
 [versions]
-agp = "8.12.0"
+agp = "9.0.1"
 android-compileSdk = "36"
-android-minSdk = "24"
+android-minSdk = "26"
 #noinspection OldTargetApi
 android-targetSdk = "35"
 androidx-activity = "1.13.0"
@@ -10,6 +10,7 @@ androidx-core = "1.18.0"
 androidx-espresso = "3.7.0"
 androidx-lifecycle = "2.10.0"
 androidx-testExt = "1.3.0"
+argon2Jvm = "2.12"
 biometricKtx = "1.4.0-alpha02"
 composeHotReload = "1.1.1"
 composeMultiplatform = "1.11.0"
@@ -20,13 +21,15 @@ navigation3Ui = "1.1.1"
 platformtoolsCore = "0.7.5"
 room = "2.8.4"
 sqlite = "2.6.2"
-ksp = "2.2.10-2.0.2"
+ksp = "2.3.7"
+
 [libraries]
 androidx-biometric-ktx = { module = "androidx.biometric:biometric-ktx", version.ref = "biometricKtx" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
+argon2-jvm = { module = "de.mkammerer:argon2-jvm", version.ref = "argon2Jvm" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso" }
